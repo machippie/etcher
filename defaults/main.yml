@@ -1,0 +1,10 @@
+# Standards: 0.1
+---
+# @var etcher_user:description: User to run user-specific commands
+# @var etcher_user:value: etcher_user | default(homebrew_user) | default(ansible_user_id)
+# etcher_user:
+
+# @var etcher_started:description: Start in background after install
+etcher_started: True
+
+...

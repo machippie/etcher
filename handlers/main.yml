@@ -1,0 +1,16 @@
+# Standards: 0.1
+---
+- name: Kill etcher
+  command: killall belenaEtcher
+  register: etcher_kill
+  failed_when: etcher_kill.rc != 0 and "No matching processes belonging to you were found" not in etcher_kill.stderr
+  become: "{{ (etcher_user != ansible_user_id) | bool }}"
+  become_user: "{{ etcher_user }}"
+
+- name: Start etcher
+  when: etcher_started
+  command: open -g /Applications/belenaEtcher.app
+  become: "{{ (etcher_user != ansible_user_id) | bool }}"
+  become_user: "{{ etcher_user }}"
+
+...

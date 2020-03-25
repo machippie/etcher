@@ -1,0 +1,31 @@
+# Standards: 0.1
+---
+- name: Fact etcher user
+  set_fact:
+    etcher_user: "{{ etcher_user | default(homebrew_user) | default(ansible_user_id) }}"
+  tags:
+    - etcher
+
+- become: "{{ (etcher_user != ansible_user_id) | bool }}"
+  become_user: "{{ etcher_user }}"
+  block:
+    - name: Install required package
+      ignore_errors: True
+      homebrew_cask:
+        name: balenaetcher
+        greedy: True
+        options: appdir=/Applications
+        accept_external_apps: False
+        state: upgraded
+      tags:
+        - etcher
+
+- name: Remove quarantine flag
+  register: etcher_quarantine
+  failed_when: etcher_quarantine.rc != 0 and "No such xattr" not in etcher_quarantine.stderr
+  changed_when: etcher_quarantine.rc == 0
+  command: xattr -d com.apple.quarantine /Applications/belenaEtcher.app
+  tags:
+    - etcher
+
+...
