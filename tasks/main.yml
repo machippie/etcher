@@ -24,7 +24,7 @@
   register: etcher_quarantine
   failed_when: etcher_quarantine.rc != 0 and "No such xattr" not in etcher_quarantine.stderr
   changed_when: etcher_quarantine.rc == 0
-  command: xattr -d com.apple.quarantine /Applications/belenaEtcher.app
+  command: xattr -d com.apple.quarantine /Applications/balenaEtcher.app
   tags:
     - etcher
 
